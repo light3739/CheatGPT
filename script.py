@@ -4,68 +4,68 @@ import keyboard
 import pyperclip
 import logging
 
-# Configure the logging module
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Initialize the OpenAI client
-client = openai.OpenAI(api_key="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")
+API_KEY = "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"
+MODEL_NAME = "gpt-4-1106-preview"
+HOTKEY = 'ctrl+shift+z'
+OK_WINDOW_COLOR = "green"
+ERROR_WINDOW_COLOR = "red"
+WINDOW_SIZE = "10x10+0+0"
 
-# Initialize an empty list to hold the conversation history
-conversation_history = []
+
+class ChatBot:
+    def __init__(self, api_key, model_name):
+        self.client = openai.OpenAI(api_key=api_key)
+        self.model_name = model_name
+        self.conversation_history = []
+
+    def chat(self, user_input):
+        self.conversation_history.append({
+            "role": "user",
+            "content": user_input
+        })
+
+        try:
+            chat_completion = self.client.chat.completions.create(
+                model=self.model_name,
+                messages=self.conversation_history
+            )
+        except Exception as e:
+            logging.error(f"An error occurred: {e}")
+            return show_window(ERROR_WINDOW_COLOR, WINDOW_SIZE)
+
+        self.conversation_history.append({
+            "role": "assistant",
+            "content": chat_completion.choices[0].message.content
+        })
+
+        return chat_completion
 
 
-def show_window():
-    # Create the main window
+def show_window(color, size):
     root = tk.Tk()
-    root.attributes('-topmost', True)  # Keep the window on top of others
-    root.attributes('-alpha', 1)
-    root.overrideredirect(True)  # Remove the window decorations
-    # Set the size and position of the window
-    root.geometry("10x10+0+0")
-    # Set the background color of the window to green
-    root.configure(background='green')
-    # Hide the window after 2 seconds
+    root.attributes('-topmost', True)
+    root.attributes('-alpha', 0.5)
+    root.overrideredirect(True)
+    root.geometry(size)
+    root.configure(background=color)
     root.after(2000, root.destroy)
-    # Run the application
     root.mainloop()
 
 
-def chat_with_model(user_input):
-    global conversation_history
-    # Add the user's message to the conversation history
-    conversation_history.append({
-        "role": "user",
-        "content": user_input
-    })
-
-    chat_completion = client.chat.completions.create(
-        model="gpt-4-1106-preview",
-        messages=conversation_history
-    )
-
-    # Add the model's response to the conversation history
-    conversation_history.append({
-        "role": "assistant",
-        "content": chat_completion.choices[0].message.content
-    })
-
-    return chat_completion
-
-
-def on_ctrl_c_c_press():
-    # Get the selected text
-    logging.info("Ctrl+shift+z pressed")
+def on_hotkey_press():
+    logging.info(f"{HOTKEY} pressed")
     selected_text = pyperclip.paste()
     logging.info(selected_text)
-    # Call the chat function
-    chat_completion = chat_with_model(selected_text)
+
+    chat_bot = ChatBot(API_KEY, MODEL_NAME)
+    chat_completion = chat_bot.chat(selected_text)
     logging.info(chat_completion.choices[0].message.content)
-    # Show the window
-    show_window()
+
+    pyperclip.copy(chat_completion.choices[0].message.content)
+    show_window(OK_WINDOW_COLOR, WINDOW_SIZE)
 
 
-# Listen for the CTRL+C+C key combination
-keyboard.add_hotkey('ctrl+shift+z', on_ctrl_c_c_press)
-
-# Keep the script running
+keyboard.add_hotkey(HOTKEY, on_hotkey_press)
 keyboard.wait()
