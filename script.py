@@ -6,7 +6,7 @@ import logging
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-API_KEY = "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"
+API_KEY = "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"
 MODEL_NAME = "gpt-4-1106-preview"
 HOTKEY = 'ctrl+shift+z'
 OK_WINDOW_COLOR = "green"
@@ -43,6 +43,9 @@ class ChatBot:
         return chat_completion
 
 
+chat_bot = ChatBot(API_KEY, MODEL_NAME)
+
+
 def show_window(color, size):
     root = tk.Tk()
     root.attributes('-topmost', True)
@@ -55,11 +58,10 @@ def show_window(color, size):
 
 
 def on_hotkey_press():
+    global chat_bot
     logging.info(f"{HOTKEY} pressed")
     selected_text = pyperclip.paste()
     logging.info(selected_text)
-
-    chat_bot = ChatBot(API_KEY, MODEL_NAME)
     chat_completion = chat_bot.chat(selected_text)
     logging.info(chat_completion.choices[0].message.content)
 
@@ -69,3 +71,4 @@ def on_hotkey_press():
 
 keyboard.add_hotkey(HOTKEY, on_hotkey_press)
 keyboard.wait()
+
