@@ -6,7 +6,7 @@ import logging
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-API_KEY = "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"
+API_KEY = "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"
 MODEL_NAME = "gpt-4-1106-preview"
 HOTKEY = 'ctrl+shift+z'
 OK_WINDOW_COLOR = "green"
@@ -53,7 +53,7 @@ def show_window(color, size):
     root.overrideredirect(True)
     root.geometry(size)
     root.configure(background=color)
-    root.after(2000, root.destroy)
+    root.after(500, root.destroy)
     root.mainloop()
 
 
@@ -71,4 +71,3 @@ def on_hotkey_press():
 
 keyboard.add_hotkey(HOTKEY, on_hotkey_press)
 keyboard.wait()
-
