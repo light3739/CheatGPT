@@ -3,3 +3,6 @@
 .output
 /.output
 .env
+script.spec
+/build
+/dist
