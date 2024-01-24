@@ -55,7 +55,8 @@ After selecting text, use the hotkey (`ctrl+shift+z`by default) to activate the 
 
 1. CTRL + C on selected text
 2. CTRL + SHIFT + Z to activate the ChatBot
-3. CTRL + V to paste the response
+3. You will see green square in top left corner of your screen for 1 second
+4. CTRL + V to paste the response
 
 ## Building the Application as an Executable
 
