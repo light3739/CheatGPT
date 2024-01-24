@@ -4,15 +4,9 @@ import keyboard
 import pyperclip
 import logging
 
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
-
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Retrieve API key from environment variables
-API_KEY = os.getenv('OPENAI_API_KEY')
+API_KEY = "sk-<your-api-key>"
 MODEL_NAME = "gpt-4-1106-preview"
 HOTKEY = 'ctrl+shift+z'
 OK_WINDOW_COLOR = "green"
