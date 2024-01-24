@@ -70,12 +70,12 @@ To build this application as an executable for Windows, follow these steps:
 2. Run PyInstaller with your script:
 
     ```
-    pyinstaller --noconfirm --onefile --windowed --add-data ".env;." script.py
+    pyinstaller --noconfirm --onefile --hidden-import=keyboard --windowed script.py
     ```
 
     - `--onefile`: Packs everything into a single executable.
     - `--hidden-import=keyboard`: Ensures the`keyboard`module is included.
-    - `--add-data`: Includes the`.env`file in the build (adjust the path as needed).
+    - `--windowed`: Prevents a console window from opening when the executable is run.
 
 3. Find the resulting`.exe`file in the`dist`folder after the build process completes.
 
